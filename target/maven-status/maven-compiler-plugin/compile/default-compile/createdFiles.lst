@@ -1,0 +1,16 @@
+com\school\homework\config\SecurityConfig.class
+com\school\homework\repository\HomeworkRepository.class
+com\school\homework\repository\UserRepository.class
+com\school\homework\HomeworkAlertApplication.class
+com\school\homework\entity\HomeworkStatus.class
+com\school\homework\config\DataSeeder.class
+com\school\homework\controller\AuthController.class
+com\school\homework\repository\SubjectRepository.class
+com\school\homework\repository\NotificationRepository.class
+com\school\homework\repository\HomeworkStatusRepository.class
+com\school\homework\controller\ApiController.class
+com\school\homework\entity\AppUser$Role.class
+com\school\homework\entity\Subject.class
+com\school\homework\entity\AppUser.class
+com\school\homework\entity\Notification.class
+com\school\homework\entity\Homework.class
