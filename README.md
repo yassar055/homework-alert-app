@@ -179,13 +179,12 @@ homework-alert-app/
 - **H2 Database** (file-based, zero config)
 - **Vanilla JS + Tailwind CSS CDN** (no Node.js needed)
 - **Maven** (offline build using cached dependencies)
+- **Docker** (Alpine JRE, ~225MB image)
 
 ## Requirements
 
-- JDK 17+ (you have Temurin 17.0.12)
-- Maven 3.9+ (you have 3.9.9)
-- No Node.js needed
-- No internet needed for build (offline mode)
+**Local run:** JDK 17+, Maven 3.9+
+**Docker run:** Docker only (no JDK/Maven needed on target machine)
 
 ## Rebuild After Code Changes
 
@@ -196,4 +195,60 @@ mvn package -o -DskipTests && java -jar target/homework-alert-1.0.0.jar
 To reset demo data (clear database):
 ```bash
 rm -rf data && java -jar target/homework-alert-1.0.0.jar
+```
+
+---
+
+## Docker
+
+### Build & Run
+
+```bash
+# 1. Build JAR locally (one-time, uses cached Maven deps)
+mvn package -o -DskipTests
+
+# 2. Build Docker image
+docker build -t homework-alert:1.0.0 .
+
+# 3. Run
+docker run -d --name homework-alert -p 8080:8080 -v homework-data:/app/data homework-alert:1.0.0
+```
+
+Open http://localhost:8080
+
+### Or use Docker Compose
+
+```bash
+mvn package -o -DskipTests
+docker-compose up -d --build
+```
+
+### Useful commands
+
+```bash
+# View logs
+docker logs -f homework-alert
+
+# Stop
+docker stop homework-alert
+
+# Start again (data persists)
+docker start homework-alert
+
+# Reset data (remove volume)
+docker rm -f homework-alert && docker volume rm homework-data
+
+# Rebuild after code changes
+mvn package -o -DskipTests && docker build -t homework-alert:1.0.0 . && docker rm -f homework-alert && docker run -d --name homework-alert -p 8080:8080 -v homework-data:/app/data homework-alert:1.0.0
+```
+
+### Deploy anywhere
+
+```bash
+# Save image to file
+docker save homework-alert:1.0.0 -o homework-alert.tar
+
+# Load on another machine
+docker load -i homework-alert.tar
+docker run -d --name homework-alert -p 8080:8080 -v homework-data:/app/data homework-alert:1.0.0
 ```
